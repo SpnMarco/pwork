@@ -4,6 +4,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using MedicalAppointments.Data;
+using MedicalAppointments.Interfaces;
+using MedicalAppointments.Repositories;
+using MedicalAppointments.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,15 @@ builder.Services.AddControllers();
 // Configure Entity Framework with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register Repositories
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IPazienteRepository, PazienteRepository>();
+builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
+builder.Services.AddScoped<IAppuntamentoRepository, AppuntamentoRepository>();
+
+// Register Services
+builder.Services.AddScoped<IAppuntamentoService, AppuntamentoService>();
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
