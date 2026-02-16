@@ -6,7 +6,7 @@ API RESTful per la gestione di appuntamenti medici, pazienti, medici e referti.
 
 - **Framework**: ASP.NET Core 8.0 Web API
 - **Linguaggio**: C# 12
-- **Database**: SQL Server (LocalDB per sviluppo)
+- **Database**: SQLite (file-based, zero configuration)
 - **ORM**: Entity Framework Core 8.0
 - **Autenticazione**: JWT (JSON Web Tokens)
 - **Documentazione API**: Swagger/OpenAPI
@@ -61,8 +61,7 @@ Appuntamento
 ### Prerequisiti
 
 - .NET 8.0 SDK
-- SQL Server o SQL Server LocalDB
-- Visual Studio 2022 / VS Code / Rider
+- Visual Studio 2022 / VS Code / Rider (opzionale)
 
 ### Installazione
 
@@ -77,34 +76,37 @@ Appuntamento
    dotnet restore
    ```
 
-3. **Configura la stringa di connessione**
-   
-   Modifica `appsettings.json` se necessario:
-   ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MedicalAppointmentsDb;Trusted_Connection=true"
-   }
-   ```
-
-4. **Crea il database**
-   
-   Il database viene creato automaticamente all'avvio dell'applicazione.
-   
-   Oppure usa le migrations:
-   ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
-   ```
-
-5. **Avvia l'applicazione**
+3. **Avvia l'applicazione**
    ```bash
    dotnet run
    ```
 
-6. **Accedi a Swagger UI**
-   
-   Apri il browser: `https://localhost:5001` o `http://localhost:5000`
+   Il database SQLite verrà creato automaticamente con dati di seed al primo avvio!
 
+4. **Accedi alla documentazione Swagger**
+   ```
+   http://localhost:5098/swagger
+   ```
+
+### 🎉 Database Pre-popolato!
+
+L'applicazione include un sistema di seed automatico che crea:
+- ✅ 5 Pazienti
+- ✅ 5 Medici (uno per specializzazione)
+- ✅ 5 Specializzazioni
+- ✅ 12 Utenti (Admin, Receptionist, Pazienti, Medici)
+- ✅ 10 Appuntamenti (vari stati)
+- ✅ 3 Referti medici
+- ✅ ~25 Slot di disponibilità medici
+
+**Credenziali per testing:**
+- Admin: `admin` / `Admin123!`
+- Receptionist: `receptionist` / `Recep123!`
+- Paziente: `mario.rossi` / `Mario123!`
+- Medico: `dr.caruso` / `Cardio123!`
+
+📖 Vedi `docs/migrazione-sqlite.md` per la lista completa di credenziali e dati di test.
+   
 ## Configurazione
 
 ### appsettings.json
@@ -112,10 +114,10 @@ Appuntamento
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "..."
+    "DefaultConnection": "Data Source=medical_appointments.db"
   },
   "JwtSettings": {
-    "SecretKey": "YourSecretKey",
+    "SecretKey": "YourSuperSecretKeyForJwtTokenGeneration12345!",
     "Issuer": "MedicalAppointmentsAPI",
     "Audience": "MedicalAppointmentsClient",
     "ExpirationMinutes": 1440

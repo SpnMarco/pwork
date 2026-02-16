@@ -27,7 +27,7 @@ Applicazione web full-stack API-based per un'organizzazione del settore sanitari
 #### Backend
 - **Framework**: ASP.NET Core 8.0 Web API
 - **Linguaggio**: C# 12
-- **Database**: SQL Server (LocalDB per sviluppo)
+- **Database**: SQLite (file-based, zero configuration)
 - **ORM**: Entity Framework Core 8.0
 - **Autenticazione**: JWT (JSON Web Tokens)
 - **Documentazione**: Swagger/OpenAPI
@@ -104,28 +104,25 @@ dotnet run
 ```
 
 #### Test API
+
+Il database viene popolato automaticamente con dati di esempio all'avvio!
+
+**Credenziali per testing:**
+- Admin: `admin` / `Admin123!`
+- Receptionist: `receptionist` / `Recep123!`
+- Paziente: `mario.rossi` / `Mario123!`
+- Medico: `dr.caruso` / `Cardio123!`
+
+Vedi `docs/migrazione-sqlite.md` per la lista completa.
+
 ```bash
 # Health check
 curl http://localhost:5098/api/health
 
-# Registrazione utente
-curl -X POST http://localhost:5098/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "mario.rossi",
-    "email": "mario.rossi@email.com",
-    "password": "Password123!",
-    "nome": "Mario",
-    "cognome": "Rossi",
-    "codiceFiscale": "RSSMRA80A01H501U",
-    "dataNascita": "1980-01-01",
-    "telefono": "3331234567"
-  }'
-
 # Login
 curl -X POST http://localhost:5098/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"mario.rossi","password":"Password123!"}'
+  -d '{"username":"mario.rossi","password":"Mario123!"}'
 ```
 
 ### Frontend (Da Implementare)

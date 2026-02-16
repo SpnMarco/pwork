@@ -69,6 +69,10 @@ ScaffoldingReadMe.txt
 *.mdf
 *.ldf
 *.ndf
+*.db
+*.db-shm
+*.db-wal
+medical_appointments.db*
 
 # Entity Framework
 *.edmx.diagram

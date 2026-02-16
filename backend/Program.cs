@@ -13,9 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddControllers();
 
-// Configure Entity Framework with SQL Server
+// Configure Entity Framework with SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -131,18 +131,21 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Create database if it doesn't exist
+// Create database and seed data if it doesn't exist
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     try
     {
         dbContext.Database.EnsureCreated();
-        Console.WriteLine("Database created successfully or already exists.");
+        Console.WriteLine("✓ Database created successfully or already exists.");
+        
+        // Seed initial data
+        await DbSeeder.SeedAsync(dbContext);
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error creating database: {ex.Message}");
+        Console.WriteLine($"❌ Error during database initialization: {ex.Message}");
     }
 }
 
