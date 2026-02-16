@@ -1,0 +1,124 @@
+### Medical Appointments API - Test Examples
+### Usa questo file con REST Client extension in VS Code
+### oppure copia i comandi curl per testarli nel terminale
+
+@baseUrl = http://localhost:5098
+@token = 
+
+### Health Check
+GET {{baseUrl}}/api/health
+Content-Type: application/json
+
+###
+
+### Register New Patient User
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "mario.rossi",
+  "email": "mario.rossi@email.com",
+  "password": "Password123!",
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "codiceFiscale": "RSSMRA80A01H501U",
+  "dataNascita": "1980-01-01",
+  "telefono": "3331234567"
+}
+
+###
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "mario.rossi",
+  "password": "Password123!"
+}
+
+###
+
+### Register Another Patient
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "giulia.bianchi",
+  "email": "giulia.bianchi@email.com",
+  "password": "Giulia2024!",
+  "nome": "Giulia",
+  "cognome": "Bianchi",
+  "codiceFiscale": "BNCGLI85M50F205X",
+  "dataNascita": "1985-08-10",
+  "telefono": "3339876543"
+}
+
+###
+
+### Login with Email
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "mario.rossi@email.com",
+  "password": "Password123!"
+}
+
+###
+
+### Test with Invalid Credentials
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "wrong.user",
+  "password": "wrongpassword"
+}
+
+###
+
+### Example: Protected Endpoint (will be implemented)
+### GET {{baseUrl}}/api/pazienti
+### Authorization: Bearer {{token}}
+
+###
+
+### Example: Get Appointments (will be implemented)
+### GET {{baseUrl}}/api/appuntamenti
+### Authorization: Bearer {{token}}
+
+###
+
+### Example: Create Appointment (will be implemented)
+### POST {{baseUrl}}/api/appuntamenti
+### Authorization: Bearer {{token}}
+### Content-Type: application/json
+###
+### {
+###   "pazienteId": 1,
+###   "medicoId": 1,
+###   "dataOra": "2026-02-20T10:00:00",
+###   "motivoVisita": "Controllo generale"
+### }
+
+###
+
+### CURL Examples
+### 
+### Health Check:
+### curl http://localhost:5098/api/health
+###
+### Register:
+### curl -X POST http://localhost:5098/api/auth/register \
+###   -H "Content-Type: application/json" \
+###   -d '{"username":"test.user","email":"test@email.com","password":"Test123!","nome":"Test","cognome":"User","codiceFiscale":"TSTusr90A01H501A","dataNascita":"1990-01-01","telefono":"3331111111"}'
+###
+### Login:
+### curl -X POST http://localhost:5098/api/auth/login \
+###   -H "Content-Type: application/json" \
+###   -d '{"username":"test.user","password":"Test123!"}'
+###
+### With Token:
+### curl http://localhost:5098/api/pazienti \
+###   -H "Authorization: Bearer YOUR_TOKEN_HERE"
