@@ -20,6 +20,7 @@ import {
   Alert,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
 import medicoService from '../services/medicoService';
 import appuntamentoService from '../services/appuntamentoService';
@@ -32,6 +33,7 @@ const steps = ['Scegli Specializzazione', 'Scegli Medico', 'Scegli Data e Ora', 
 const NuovoAppuntamentoPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { user } = useAuth();
   const { showSuccess, showError } = useNotification();
   
   const [activeStep, setActiveStep] = useState(0);
@@ -128,11 +130,24 @@ const NuovoAppuntamentoPage = () => {
     setSubmitting(true);
 
     try {
+      // Get pazienteId from user context
+      const pazienteId = user?.pazienteId;
+      
+      if (!pazienteId) {
+        showError('Devi essere un paziente per prenotare un appuntamento');
+        return;
+      }
+
+      // Combina data e ora in un DateTime
+      const dataOraCompleta = new Date(`${selectedData}T${selectedSlot}:00`);
+      
       const appuntamentoData = {
+        pazienteId: pazienteId,
         medicoId: selectedMedico.id,
-        data: selectedData,
-        ora: selectedSlot,
+        dataOra: dataOraCompleta.toISOString(),
+        durataMinuti: 30, // Default 30 minuti
         note: note || null,
+        motivoVisita: null,
       };
 
       await appuntamentoService.create(appuntamentoData);

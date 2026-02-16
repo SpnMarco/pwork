@@ -100,22 +100,22 @@ const AppuntamentiPage = () => {
     {
       id: 'data',
       label: 'Data',
-      render: (row) => formatDate(row.data),
+      render: (row) => formatDate(row.dataOra),
     },
     {
       id: 'ora',
       label: 'Ora',
-      render: (row) => formatTime(row.ora),
+      render: (row) => formatTime(row.dataOra),
     },
     {
       id: 'medico',
       label: 'Medico',
-      render: (row) => row.medicoNome || 'N/A',
+      render: (row) => `Dr. ${row.medicoNome} ${row.medicoCognome}`,
     },
     {
       id: 'paziente',
       label: 'Paziente',
-      render: (row) => row.pazienteNome || 'N/A',
+      render: (row) => `${row.pazienteNome} ${row.pazienteCognome}`,
     },
     {
       id: 'stato',

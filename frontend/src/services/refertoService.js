@@ -7,8 +7,10 @@ export const refertoService = {
    * @returns {Promise} List of referti
    */
   getAll: async (filters = {}) => {
-    const response = await api.get('/referti', { params: filters });
-    return response.data;
+    // Backend doesn't have referti endpoint yet - return empty array
+    return Promise.resolve([]);
+    // const response = await api.get('/referti', { params: filters });
+    // return response.data;
   },
 
   /**
@@ -17,8 +19,10 @@ export const refertoService = {
    * @returns {Promise} Referto data
    */
   getById: async (id) => {
-    const response = await api.get(`/referti/${id}`);
-    return response.data;
+    // Backend doesn't have referti endpoint yet
+    return Promise.reject(new Error('Endpoint non implementato'));
+    // const response = await api.get(`/referti/${id}`);
+    // return response.data;
   },
 
   /**
@@ -27,8 +31,9 @@ export const refertoService = {
    * @returns {Promise} Created referto
    */
   create: async (data) => {
-    const response = await api.post('/referti', data);
-    return response.data;
+    return Promise.reject(new Error('Endpoint non implementato'));
+    // const response = await api.post('/referti', data);
+    // return response.data;
   },
 
   /**
@@ -38,8 +43,9 @@ export const refertoService = {
    * @returns {Promise} Updated referto
    */
   update: async (id, data) => {
-    const response = await api.put(`/referti/${id}`, data);
-    return response.data;
+    return Promise.reject(new Error('Endpoint non implementato'));
+    // const response = await api.put(`/referti/${id}`, data);
+    // return response.data;
   },
 
   /**
@@ -48,8 +54,9 @@ export const refertoService = {
    * @returns {Promise}
    */
   delete: async (id) => {
-    const response = await api.delete(`/referti/${id}`);
-    return response.data;
+    return Promise.reject(new Error('Endpoint non implementato'));
+    // const response = await api.delete(`/referti/${id}`);
+    // return response.data;
   },
 
   /**
@@ -58,10 +65,11 @@ export const refertoService = {
    * @returns {Promise} PDF blob
    */
   downloadPDF: async (id) => {
-    const response = await api.get(`/referti/${id}/pdf`, {
-      responseType: 'blob'
-    });
-    return response.data;
+    return Promise.reject(new Error('Endpoint non implementato'));
+    // const response = await api.get(`/referti/${id}/pdf`, {
+    //   responseType: 'blob'
+    // });
+    // return response.data;
   },
 };
 

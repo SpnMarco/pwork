@@ -70,7 +70,7 @@ export const appuntamentoService = {
    * @returns {Promise} List of upcoming appointments
    */
   getUpcoming: async () => {
-    const response = await api.get('/appuntamenti/upcoming');
+    const response = await api.get('/appuntamenti/miei');
     return response.data;
   },
 };

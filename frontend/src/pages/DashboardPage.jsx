@@ -161,7 +161,7 @@ const DashboardPage = () => {
         {/* Upcoming Appointments */}
         <Grid item xs={12} md={8}>
           <Paper elevation={2} sx={{ p: 3 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
               <Typography variant="h6" fontWeight={600}>
                 Prossimi Appuntamenti
               </Typography>
@@ -169,6 +169,7 @@ const DashboardPage = () => {
                 variant="contained"
                 size="small"
                 onClick={() => navigate('/appuntamenti/nuovo')}
+                sx={{ ml: 2 }}
               >
                 Prenota
               </Button>
@@ -204,7 +205,7 @@ const DashboardPage = () => {
                         primary={
                           <Box display="flex" alignItems="center" gap={1}>
                             <Typography variant="subtitle1" fontWeight={500}>
-                              {appointment.medicoNome || 'Medico'}
+                              Dr. {appointment.medicoNome} {appointment.medicoCognome}
                             </Typography>
                             <Chip
                               label={appointment.stato || 'In attesa'}
@@ -216,7 +217,7 @@ const DashboardPage = () => {
                         secondary={
                           <Box mt={0.5}>
                             <Typography variant="body2" color="text.secondary">
-                              {getRelativeDateString(appointment.data)} - {formatTime(appointment.ora)}
+                              {getRelativeDateString(appointment.dataOra)} - {formatTime(appointment.dataOra)}
                             </Typography>
                             {appointment.note && (
                               <Typography variant="body2" color="text.secondary">

@@ -67,8 +67,10 @@ export const pazienteService = {
    * @returns {Promise} List of referti
    */
   getReferti: async (id) => {
-    const response = await api.get(`/pazienti/${id}/referti`);
-    return response.data;
+    // Backend doesn't have referti endpoint yet - return empty array
+    return Promise.resolve([]);
+    // const response = await api.get(`/pazienti/${id}/referti`);
+    // return response.data;
   },
 };
 

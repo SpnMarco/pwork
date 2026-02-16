@@ -51,15 +51,15 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// Configure CORS
+// Configure CORS - Allow ALL origins for development/testing
+// WARNING: This is NOT secure for production!
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173") // React dev servers
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
@@ -121,7 +121,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// Comment out HTTPS redirection for development to avoid CORS issues
+// app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
