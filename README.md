@@ -82,13 +82,28 @@ pwork/
 
 ## 🚀 Quick Start
 
-### Backend
+### Opzione 1: Docker (Consigliato per Deploy)
 
-#### Prerequisiti
+```bash
+# Avvia tutto con Docker Compose
+docker-compose up --build
+
+# Accesso:
+# Frontend: http://localhost:3000
+# Backend: http://localhost:8080
+# Swagger: http://localhost:8080/swagger
+```
+
+📚 **Guida completa:** [`DOCKER_README.md`](./DOCKER_README.md)
+
+### Opzione 2: Sviluppo Locale
+
+#### Backend
+
+**Prerequisiti:**
 - .NET 8.0 SDK
-- SQL Server o SQL Server LocalDB
 
-#### Installazione e Avvio
+**Avvio:**
 ```bash
 # Naviga nella cartella backend
 cd backend
@@ -100,7 +115,7 @@ dotnet restore
 dotnet run
 
 # L'API sarà disponibile su http://localhost:5098
-# Swagger UI: http://localhost:5098
+# Swagger UI: http://localhost:5098/swagger
 ```
 
 #### Test API
@@ -125,7 +140,54 @@ curl -X POST http://localhost:5098/api/auth/login \
   -d '{"username":"mario.rossi","password":"Mario123!"}'
 ```
 
-### Frontend (Da Implementare)
+#### Frontend
+
+**Prerequisiti:**
+- Node.js 20+
+
+**Avvio:**
+```bash
+# Naviga nella cartella frontend
+cd frontend
+
+# Installa dipendenze
+npm install
+
+# Avvia il dev server
+npm run dev
+
+# L'app sarà disponibile su http://localhost:5173
+```
+
+---
+
+## 🐳 Docker & Deployment
+
+### Test Locale con Docker
+
+```bash
+# Build e avvia tutti i servizi
+docker-compose up --build
+
+# In background
+docker-compose up -d --build
+
+# Visualizza logs
+docker-compose logs -f
+```
+
+### Deploy su Render
+
+L'applicazione è pronta per il deploy su Render con Docker!
+
+📚 **Guida completa:** [`docs/DEPLOYMENT_RENDER.md`](./docs/DEPLOYMENT_RENDER.md)
+
+**Quick deploy:**
+1. Push su GitHub/GitLab
+2. Render → New → Blueprint
+3. Connetti repository
+4. Render legge `render.yaml` automaticamente
+5. Deploy! 🚀
 ```bash
 # Naviga nella cartella frontend
 cd frontend
