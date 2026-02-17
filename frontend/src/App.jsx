@@ -16,6 +16,7 @@ import MediciPage from './pages/MediciPage';
 import AppuntamentiPage from './pages/AppuntamentiPage';
 import NuovoAppuntamentoPage from './pages/NuovoAppuntamentoPage';
 import RefertiPage from './pages/RefertiPage';
+import ProfiloPage from './pages/ProfiloPage';
 
 // Create MUI theme with medical/healthcare colors
 const theme = createTheme({
@@ -114,7 +115,7 @@ function App() {
                 <Route
                   path="/medici"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute allowedRoles={['Paziente', 'Admin', 'Receptionist']}>
                       <MediciPage />
                     </ProtectedRoute>
                   }
@@ -132,7 +133,7 @@ function App() {
                 <Route
                   path="/appuntamenti/nuovo"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute allowedRoles={['Paziente']}>
                       <NuovoAppuntamentoPage />
                     </ProtectedRoute>
                   }
@@ -143,6 +144,15 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <RefertiPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/profilo"
+                  element={
+                    <ProtectedRoute>
+                      <ProfiloPage />
                     </ProtectedRoute>
                   }
                 />

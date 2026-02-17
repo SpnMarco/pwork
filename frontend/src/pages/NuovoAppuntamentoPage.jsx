@@ -60,7 +60,7 @@ const NuovoAppuntamentoPage = () => {
     if (medicoId) {
       loadMedicoDirectly(medicoId);
     }
-  }, []);
+  }, [searchParams]);
 
   const loadSpecializzazioni = async () => {
     try {
