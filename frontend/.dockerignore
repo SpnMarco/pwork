@@ -1,0 +1,38 @@
+# Frontend .dockerignore
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files (will be passed as build args)
+.env
+.env.local
+.env.production
+
+# Testing
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Documentation
+*.md
+README.md
+
+# Git
+.git/
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db

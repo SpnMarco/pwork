@@ -1,0 +1,46 @@
+services:
+  # Backend API Service
+  - type: web
+    name: medical-appointments-api
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    region: oregon # Scegli la regione più vicina: oregon, frankfurt, singapore, ohio
+    plan: free # free, starter, standard, pro, pro plus, pro max, pro ultra
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://+:8080
+      - key: JwtSettings__SecretKey
+        generateValue: true # Genera una chiave segreta casuale
+      - key: JwtSettings__Issuer
+        value: MedicalAppointmentsAPI
+      - key: JwtSettings__Audience
+        value: MedicalAppointmentsClient
+      - key: JwtSettings__ExpirationMinutes
+        value: 1440
+      - key: ConnectionStrings__DefaultConnection
+        value: Data Source=/app/data/medical_appointments.db
+    disk:
+      name: sqlite-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  # Frontend Service
+  - type: web
+    name: medical-appointments-frontend
+    env: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    region: oregon # Stessa regione del backend
+    plan: free
+    buildCommand: docker build --build-arg VITE_API_BASE_URL=$BACKEND_URL -t frontend .
+    envVars:
+      - key: VITE_API_BASE_URL
+        # Importante: Sostituisci con l'URL del tuo backend Render dopo il deploy
+        # Esempio: https://medical-appointments-api.onrender.com/api
+        fromService:
+          name: medical-appointments-api
+          type: web
+          property: url

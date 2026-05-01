@@ -38,9 +38,17 @@ const DashboardPage = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      // Load upcoming appointments
-      const appointments = await appuntamentoService.getUpcoming();
-      setUpcomingAppointments(appointments);
+      
+      // Only load appointments for Paziente and Medico roles
+      if (user?.ruolo === 'Paziente' || user?.ruolo === 'Medico') {
+        const appointments = await appuntamentoService.getUpcoming();
+        setUpcomingAppointments(appointments);
+      }
+      // Admin and Receptionist get all appointments
+      else if (user?.ruolo === 'Admin' || user?.ruolo === 'Receptionist') {
+        const appointments = await appuntamentoService.getAll();
+        setUpcomingAppointments(appointments.slice(0, 10)); // Show first 10
+      }
     } catch (error) {
       console.error('Error loading dashboard:', error);
       showError('Errore nel caricamento dei dati');
@@ -163,31 +171,39 @@ const DashboardPage = () => {
           <Paper elevation={2} sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
               <Typography variant="h6" fontWeight={600}>
-                Prossimi Appuntamenti
+                {user?.ruolo === 'Medico' ? 'Prossimi Appuntamenti' : 
+                 user?.ruolo === 'Admin' || user?.ruolo === 'Receptionist' ? 'Appuntamenti Recenti' :
+                 'Prossimi Appuntamenti'}
               </Typography>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => navigate('/appuntamenti/nuovo')}
-                sx={{ ml: 2 }}
-              >
-                Prenota
-              </Button>
+              {user?.ruolo === 'Paziente' && (
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => navigate('/appuntamenti/nuovo')}
+                  sx={{ ml: 2 }}
+                >
+                  Prenota
+                </Button>
+              )}
             </Box>
 
             {upcomingAppointments.length === 0 ? (
               <Box textAlign="center" py={4}>
                 <EventIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
                 <Typography variant="body1" color="text.secondary">
-                  Nessun appuntamento in programma
+                  {user?.ruolo === 'Paziente' ? 'Nessun appuntamento in programma' :
+                   user?.ruolo === 'Medico' ? 'Nessun appuntamento in programma' :
+                   'Nessun appuntamento presente'}
                 </Typography>
-                <Button
-                  variant="outlined"
-                  sx={{ mt: 2 }}
-                  onClick={() => navigate('/appuntamenti/nuovo')}
-                >
-                  Prenota un appuntamento
-                </Button>
+                {user?.ruolo === 'Paziente' && (
+                  <Button
+                    variant="outlined"
+                    sx={{ mt: 2 }}
+                    onClick={() => navigate('/appuntamenti/nuovo')}
+                  >
+                    Prenota un appuntamento
+                  </Button>
+                )}
               </Box>
             ) : (
               <List>
@@ -251,30 +267,71 @@ const DashboardPage = () => {
               Azioni Rapide
             </Typography>
             <Box display="flex" flexDirection="column" gap={2}>
-              <Button
-                variant="outlined"
-                startIcon={<EventIcon />}
-                fullWidth
-                onClick={() => navigate('/appuntamenti/nuovo')}
-              >
-                Prenota Appuntamento
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<LocalHospitalIcon />}
-                fullWidth
-                onClick={() => navigate('/medici')}
-              >
-                Trova Medico
-              </Button>
+              {/* Only Pazienti can book appointments */}
+              {user?.ruolo === 'Paziente' && (
+                <>
+                  <Button
+                    variant="outlined"
+                    startIcon={<EventIcon />}
+                    fullWidth
+                    onClick={() => navigate('/appuntamenti/nuovo')}
+                  >
+                    Prenota Appuntamento
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<LocalHospitalIcon />}
+                    fullWidth
+                    onClick={() => navigate('/medici')}
+                  >
+                    Trova Medico
+                  </Button>
+                </>
+              )}
+              
+              {/* All roles can view referti */}
               <Button
                 variant="outlined"
                 startIcon={<DescriptionIcon />}
                 fullWidth
                 onClick={() => navigate('/referti')}
               >
-                I Miei Referti
+                {user?.ruolo === 'Medico' ? 'Referti' : 'I Miei Referti'}
               </Button>
+
+              {/* Medico-specific actions */}
+              {user?.ruolo === 'Medico' && (
+                <Button
+                  variant="outlined"
+                  startIcon={<PeopleIcon />}
+                  fullWidth
+                  onClick={() => navigate('/pazienti')}
+                >
+                  Lista Pazienti
+                </Button>
+              )}
+
+              {/* Admin/Receptionist actions */}
+              {(user?.ruolo === 'Admin' || user?.ruolo === 'Receptionist') && (
+                <>
+                  <Button
+                    variant="outlined"
+                    startIcon={<PeopleIcon />}
+                    fullWidth
+                    onClick={() => navigate('/pazienti')}
+                  >
+                    Gestisci Pazienti
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<LocalHospitalIcon />}
+                    fullWidth
+                    onClick={() => navigate('/medici')}
+                  >
+                    Gestisci Medici
+                  </Button>
+                </>
+              )}
             </Box>
           </Paper>
 

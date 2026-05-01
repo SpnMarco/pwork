@@ -24,18 +24,45 @@ const Sidebar = ({ mobileOpen, onClose }) => {
   const location = useLocation();
   const { user } = useAuth();
 
+  // Define menu items with role restrictions
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Pazienti', icon: <PeopleIcon />, path: '/pazienti', roles: ['Admin', 'Medico', 'Receptionist'] },
-    { text: 'Medici', icon: <LocalHospitalIcon />, path: '/medici' },
-    { text: 'Appuntamenti', icon: <EventIcon />, path: '/appuntamenti' },
-    { text: 'Referti', icon: <DescriptionIcon />, path: '/referti' },
-    { text: 'Profilo', icon: <PersonIcon />, path: '/profilo' },
+    { 
+      text: 'Dashboard', 
+      icon: <DashboardIcon />, 
+      path: '/' 
+    },
+    { 
+      text: 'Pazienti', 
+      icon: <PeopleIcon />, 
+      path: '/pazienti', 
+      roles: ['Admin', 'Medico', 'Receptionist'] 
+    },
+    { 
+      text: 'Medici', 
+      icon: <LocalHospitalIcon />, 
+      path: '/medici',
+      roles: ['Paziente', 'Admin', 'Receptionist'] // Medici non vedono altri medici
+    },
+    { 
+      text: 'Appuntamenti', 
+      icon: <EventIcon />, 
+      path: '/appuntamenti' 
+    },
+    { 
+      text: 'Referti', 
+      icon: <DescriptionIcon />, 
+      path: '/referti' 
+    },
+    { 
+      text: 'Profilo', 
+      icon: <PersonIcon />, 
+      path: '/profilo' 
+    },
   ];
 
   // Filter menu items based on user role
   const filteredMenuItems = menuItems.filter(item => {
-    if (!item.roles) return true;
+    if (!item.roles) return true; // Show if no role restriction
     return item.roles.includes(user?.ruolo);
   });
 

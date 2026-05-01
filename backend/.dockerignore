@@ -1,0 +1,36 @@
+# Backend .dockerignore
+
+# Build artifacts
+bin/
+obj/
+out/
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# IDE and editor files
+.vs/
+.vscode/
+*.suo
+*.user
+.idea/
+
+# Documentation
+*.md
+docs/
+
+# Git
+.git/
+.gitignore
+
+# Testing
+*.Tests/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
